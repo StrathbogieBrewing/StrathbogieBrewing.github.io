@@ -8,9 +8,9 @@ The main characteristic of tinbus are:
 1. Can provide galvanic isolation with minimal cost
 
 ## Line Encoding
-Tinbus uses a run length limited 4B-5B encoding scheme similar to modified group coded recording (GCR). The timing characteristic can be seen in Figure 1.
+Tinbus uses a run length limited 4B-5B encoding scheme similar to modified group coded recording (GCR). The timing characteristics are illustrated below.
 
-![Figure 1](./tinbus/tinbus.svgz)
+![Figure 1](./tinbus/tinbus.svg)
 
 ## Tinned
 Tinned is used to serialise messages in a compact format, it is based on principles borrowed from CBOR.
