@@ -14,7 +14,7 @@ Tinbus uses a run length limited 4B-5B encoding scheme similar to group coded re
 
 ![Figure 1](./tinbus/tinbus.svg)
 
-The encoding only uses the leading edge of the dominant pulse for data recovery. Consequently, some analogue low pass filtering of the electrical signal can significantly improve noise immunity. This makes the encoding insensitive to any asymetry in the rise and fall time and propogation of the signal.
+The encoding only uses the leading edge of the dominant pulse for data recovery. Consequently, some analogue low pass filtering of the electrical signal can significantly improve noise immunity. This makes the encoding insensitive to any asymetry in the rise and fall time and propogation time of the signal.
 
 ### Byte Encoding
 Each byte of data is transmitted as a pair of 4 bit nibbles. A frame with an odd number of nibbles is discarded as invalid.
@@ -22,28 +22,9 @@ Each byte of data is transmitted as a pair of 4 bit nibbles. A frame with an odd
 ### Run Length Limit
 A maximum of two missing dominant pulses will be allowed in any valid data frame. This ensures reliable clock recovery when devices have innacurate frequency references. Four or more missing dominant pulses are used to signal a frame break.
 
-### Tranceiver State Diagram
+### Receive and Transmit Flow Chart
 
-```mermaid
-stateDiagram
-    FrameBreak : Wait for Frame Break
-    [*] --> FrameBreak
-
-    FrameBreak --> Idle
-    Idle : Transceiver Idle
-    TX : Transmitting
-    RX : Receiving
-
-    Idle --> TX : Transmit Request
-
-    TX --> FrameBreak : Transmit Successful or Error
-    RX --> FrameBreak : Receive Error 
-    
-    RX --> Idle : Receive Successful
-    Idle --> RX : Receive Data
-
-```
-
+![Figure 2](./tinbus/tinbus-rx.svg)
 
 ## Data Encoding
 CBORM is used to serialise data in a compact format. It is based on principles borrowed from CBOR. The encoding is simplifeid to a flat data structure with 3 basic message types:
