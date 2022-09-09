@@ -1,13 +1,12 @@
 # Tinbus
 The main characteristic of tinbus are:
-
+1. Requires a bus that provides a logical OR of the dominant signal (LINBUS, CANBUS, SAE J1708, Open collector)
 1. Compatible with standard UART signalling (8N1 : 8 data bits, no parity and one stop bit)
 1. Media access is CDMA/CS/NDA (Carrier Sense Multiple Access / Collision Detection / Non-Destructive Arbitration)
 1. Does not require a bus master or controller
 1. Can provide power and data over two wires (Signal and Ground)
-1. Clocks can be +/-33% when not implemented with a statndard UART
+1. Clocks can be +/-33% when the timing is not implemented with a standard UART
 1. Galvanic isolation can be achieved with minimal cost and complexity
-1. Compatible with any physical line drivers that provide a logical OR of the dominant signal (LINBUS, CANBUS, SAE J1708, Open collector)
 
 ## Line Encoding
 Tinbus is compatible with standard UART encoding. It only encodes one bit per character to ensure:
@@ -19,7 +18,7 @@ The basic timing characteristics are illustrated below.
 
 ![Figure 1](./tinbus/tinbus.svg)
 
-Decoding only requires the leading edge of the dominant pulse for data recovery. This makes the decoding less sensitive to asymetry in the rise and fall times and propogation times of the signal.
+Decoding only requires the leading edge of the dominant pulse for data recovery. This makes the decoding less sensitive to asymetry in the rise and fall times and propogation times of the signal. It also allows data to be passed through transformers and AC coupled connections.
 
 ### Byte Encoding
 Each byte of data is transmitted as 8 characters with the most significant bit being sent first. A valid frame will have a multiple of 8 characters.
