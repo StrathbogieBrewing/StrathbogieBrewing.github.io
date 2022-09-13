@@ -1,16 +1,17 @@
 # Tinbus
+Tinbus provides...
+1. Power and data over two wires (Signal and Ground)
+1. Multiple devices on a single bus
+1. No need for a bus master or controller
+1. Compatibilty with standard UART encoding (8N1)
+1. Compatibilty with standard electrical line drivers
+1. Easy implementation
+1. Galvanic isolation with minimal cost and complexity
+
 Tinbus is not...
-1. An efficient protocol for transferring data
+1. An efficient protocol for transferring large amounts of data
 
-Tinbus is...
-1. Can be implemented with a standard UART
-1. Low speeds
-1. Shared bus
-1. Half duplex
-1. Easy to implement
-1. Power and Data over 2 wires (Signal and Ground)
-
-The protocol is intended to provide a simple method to connect devices on a bus.
+The protocol is intended to provide a simple method to connect several devices on a bus.
 
 ## Physical Layer
 Tinbus may be used with any physical layer that provides a logical OR of the dominant signal sent by devices on the bus. Examples of compatible physical layers are:
@@ -23,21 +24,16 @@ Tinbus may be used with any physical layer that provides a logical OR of the dom
 
 The physical layer configuration will determine the maximum data rate of the bus. 
 
-The Tinbus physical layer is designed to provide power and data over 2 wires. To achieve this the electrical signal is active for at least 80 % of the time. This allows for power to be provided to the devices on the bus.
+The Tinbus physical layer is designed to allow power and data to be provided over 2 wires. This is achieved by providing power for at least 80 % of the time.
 
-The physical layer of Tinbus is designed to be compatible with standard UART signalling and uses 8 data bits, no parity and one stop bit. Each bit in the message is encoded using one UART character (either 0xFF (for 1) or 0xEF (for 0)). Consequently the data rate is reduced to 1/10 of the baud rate. The transmission of a zero bit is dominant.
+The physical layer of Tinbus is designed to be compatible with standard UART signalling and uses 8 data bits, no parity and one stop bit. Each bit in the message is encoded using one UART character, 0xEF (for 1), 0xFD (for 0) and 0xFF (for end of frame). Consequently, the data rate is reduced to 1/10 of the baud rate. The transmission of a zero bit is dominant. If two or more devices are transmitting and send conflicting bits then the result will be 0xED. This will be interpretted by all devices as a '0' and the device that was trying to send the '1' will abort its transmission.
 
 ## Data Link Layer
 
 ### Framing
 
-Each frame is encoded using a modified Consistent Overhead Byte Stuffing (COBS) algorithm. Data frames are limited to 254 bytes in length and are delimitedted by a null (0x00) character. The COBSM encoding ensures that there are no nulls (0x00) in the message.
-
 1. Uses Media access is CSMA/NDA (Carrier Sense Multiple Access with Non Destructive Arbitration)
-1. Does not require a bus master or controller
-1. Can provide power and data over only two wires (Signal and Ground)
-1. Clocks can be +/-33% when the timing is not implemented with a standard UART
-1. Galvanic isolation can be achieved with minimal cost and complexity
+
 
 ## Line Encoding
 Tinbus is compatible with standard UART encoding. It only encodes one bit per character to ensure:
@@ -47,7 +43,7 @@ Tinbus is compatible with standard UART encoding. It only encodes one bit per ch
 
 The basic timing characteristics are illustrated below, where T is the bit period.
 
-![Figure 1](./tinbus/tinbus.svg)
+![Figure 1](./tinbus/tinbus-uart.svg)
 
 Decoding only needs to detect the leading edge of the dominant pulse for data recovery. This makes the decoding less sensitive to asymetry in the rise and fall times and propogation times of the signal. It also allows data to be passed through transformers and AC coupled connections.
 
