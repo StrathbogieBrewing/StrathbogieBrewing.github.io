@@ -1,8 +1,39 @@
 # Tinbus
-The main characteristic of tinbus are:
-1. Requires a bus that provides a logical OR of the dominant signal (LINBUS, CANBUS, SAE J1708, Open collector)
-1. Compatible with standard UART signalling (8N1 : 8 data bits, no parity and one stop bit)
-1. Uses Media access is CSMA/NDA (Carrier Sense Multiple Access / Non Destructive Arbitration)
+Tinbus is not...
+1. An efficient protocol for transferring data
+
+Tinbus is...
+1. Can be implemented with a standard UART
+1. Low speeds
+1. Shared bus
+1. Half duplex
+1. Easy to implement
+1. Power and Data over 2 wires (Signal and Ground)
+
+The protocol is intended to provide a simple method to connect devices on a bus.
+
+## Physical Layer
+Tinbus may be used with any physical layer that provides a logical OR of the dominant signal sent by devices on the bus. Examples of compatible physical layers are:
+
+1. Tinbus (power and data over 2 wires)
+1. Open collector or drain
+1. Linbus line driver
+1. Canbus line driver
+1. SAE J1708 (which uses RS485 line driver)
+
+The physical layer configuration will determine the maximum data rate of the bus. 
+
+The Tinbus physical layer is designed to provide power and data over 2 wires. To achieve this the electrical signal is active for at least 80 % of the time. This allows for power to be provided to the devices on the bus.
+
+The physical layer of Tinbus is designed to be compatible with standard UART signalling and uses 8 data bits, no parity and one stop bit. Each bit in the message is encoded using one UART character (either 0xFF (for 1) or 0xEF (for 0)). Consequently the data rate is reduced to 1/10 of the baud rate. The transmission of a zero bit is dominant.
+
+## Data Link Layer
+
+### Framing
+
+Each frame is encoded using a modified Consistent Overhead Byte Stuffing (COBS) algorithm. Data frames are limited to 254 bytes in length and are delimitedted by a null (0x00) character. The COBSM encoding ensures that there are no nulls (0x00) in the message.
+
+1. Uses Media access is CSMA/NDA (Carrier Sense Multiple Access with Non Destructive Arbitration)
 1. Does not require a bus master or controller
 1. Can provide power and data over only two wires (Signal and Ground)
 1. Clocks can be +/-33% when the timing is not implemented with a standard UART
