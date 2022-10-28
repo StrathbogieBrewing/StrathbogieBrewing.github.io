@@ -1,63 +1,52 @@
 # Tinbus
+Tinbus is an acronym for Temporal Impulse Network Bus.
+
+Pulses are are sent at different times to encode bits of data over a shared network bus.
+
+## Tinbus Features
 Tinbus provides...
-1. Power and data over two wires (Signal and Ground)
-1. Multiple devices on a single bus
-1. No need for a bus master or controller
-1. Compatibilty with standard UART encoding (8N1)
-1. Compatibilty with standard electrical line drivers
-1. Easy implementation
-1. Galvanic isolation with minimal cost and complexity
+1. Simple electronic hardware and software implementation
+1. Agnostic of the underlying system voltage (3V3 or 5V etc)
+1. Isolation using very low cost opto couplers (FOD817C etc)
+1. Low operating and quiescent power consumption
+1. Power and data over only two wires (Signal and Ground)
+1. Multiple devices on a single bus using carrier sense multiple access
+1. No need for a bus master using collision detection and non-destructive arbitration
+1. High tolerance to clock frequency inaccuracy
+1. Low overhead data framing mechanism
+1. Speed of about 10 Kbps due to the low cost opto couplers and software burden
+1. Transmission distance of at least 100 m
 
-Tinbus is not...
-1. An efficient protocol for transferring large amounts of data
-
-The protocol is intended to provide a simple method to connect several devices on a bus.
+The protocol is intended to provide a simple method to communicate between several devices on a bus.
 
 ## Physical Layer
-Tinbus may be used with any physical layer that provides a logical OR of the dominant signal sent by devices on the bus. Examples of compatible physical layers are:
 
-1. Tinbus (power and data over 2 wires)
-1. Open collector or drain
-1. Linbus line driver
-1. Canbus line driver
-1. SAE J1708 (which uses RS485 line driver)
+The Tinbus physical layer is designed to allow power and data to be provided over 2 wires. This is achieved by using a signalling scheme that allows active power for at least 80 % of the time.
 
-The physical layer configuration will determine the maximum data rate of the bus. 
+### Physical Layer Signalling 
 
-The Tinbus physical layer is designed to allow power and data to be provided over 2 wires. This is achieved by providing power for at least 80 % of the time.
+The basic timing characteristics are illustrated below, where T is the pulse period. With low cost optocouplers T cannot be less than about 10 us. Decoding only needs to detect the leading edge of the pulse for data recovery. This makes the decoding less sensitive to asymmetry in the rise and fall times and propagation times of the signal. A slow data rate also allows the protocol to be implemented on low speed microcontrollers.
 
-The physical layer of Tinbus is designed to be compatible with standard UART signalling and uses 8 data bits, no parity and one stop bit. Each bit in the message is encoded using one UART character, 0xEF (for 1), 0xFD (for 0) and 0xFF (for end of frame). Consequently, the data rate is reduced to 1/10 of the baud rate. The transmission of a zero bit is dominant. If two or more devices are transmitting and send conflicting bits then the result will be 0xED. This will be interpretted by all devices as a '0' and the device that was trying to send the '1' will abort its transmission.
+![Figure 1](./tinbus/tinbus-timing-raw.svg)
+
+The transmission of a zero bit is dominant in the collision arbitration process. If two or more devices are transmitting and send conflicting bits then the device attempting to send a '1' will abort immediately after receiving the '0'. All other devices on the bus will only receive the '0'. The dominant node will continue transmitting.
+
+The end of a data frame is implied by the absence of data pulses for more than 24 T.
+
+The signal encoding and decoding is illustrated below.
+
+![Figure 2](./tinbus/tinbus-flow-raw.svg)
+
+### Physical Medium Attachment
+
+The bus voltage is nominally 12 V and the supply current is limited to 60 mA maximum. The total average current drawn by devices attached to the bus should be limited to 40 mA.
+
+A dominant signal is sent by pulling the bus voltage down towards zero for about 10 us. The pull down current should be limited to 80 mA maximum and would ideally pull down to below 2 V.
+
+### Medium Dependant Interface
+Tinbus does not specify any particular connector.
 
 ## Data Link Layer
 
-### Framing
+Tinbus adapts to the data link layer of CAN bus. This provides a standard interface in the OSI stack and allows projects to leverage from Higher Level Protocols and applications developed for CAN bus.
 
-1. Uses Media access is CSMA/NDA (Carrier Sense Multiple Access with Non Destructive Arbitration)
-
-
-## Line Encoding
-Tinbus is compatible with standard UART encoding. It only encodes one bit per character to ensure:
-
-1. Power is available to devices on the bus for at least 80 % of the time
-1. Non destructive arbitration can be implemented with standard UART hardware.
-
-The basic timing characteristics are illustrated below, where T is the bit period.
-
-![Figure 1](./tinbus/tinbus-uart.svg)
-
-Decoding only needs to detect the leading edge of the dominant pulse for data recovery. This makes the decoding less sensitive to asymetry in the rise and fall times and propogation times of the signal. It also allows data to be passed through transformers and AC coupled connections.
-
-### Byte Encoding
-Each byte of data is transmitted as 8 characters with the most significant bit being sent first. A valid frame will have a multiple of 8 characters.
-
-### Frame Encoding
-Bytes that make up a message are sent as a frame. All the bits in the frame are sent without any break between characters. An idle period of at least 2 characters marks the end of the frame.
-
-## Error Detection
-An 8 bit CRC is added to the end of all frames to provide error detection. The polynomial used is 0x97 and has optimal performance for messages up to 14 bytes.
-
-## Data Encoding
-CBORM is used to serialise data into a simple and compact format. It is based on principles borrowed from CBOR. The encoding is simplifeid to a flat data structure with 3 basic message types:
-1. Signed 32 bit integers
-2. Base64 (6 bit unsigned values)
-3. Byte arrays or strings (up to 64 bytes long)
