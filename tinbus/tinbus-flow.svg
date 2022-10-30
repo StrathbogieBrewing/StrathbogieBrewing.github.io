@@ -28,9 +28,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="0.75722502"
-     inkscape:cx="424.57657"
-     inkscape:cy="360.52691"
+     inkscape:zoom="1.0708779"
+     inkscape:cx="538.34336"
+     inkscape:cy="359.51811"
      inkscape:window-width="1920"
      inkscape:window-height="1043"
      inkscape:window-x="0"
@@ -122,7 +122,7 @@
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:1.25;font-family:FreeMono;-inkscape-font-specification:'FreeMono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;white-space:pre;shape-inside:url(#rect13294);display:inline"><tspan
          x="650"
          y="261.1"
-         id="tspan40237">
+         id="tspan89026">
 </tspan></text><text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:FreeMono;-inkscape-font-specification:'FreeMono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;display:inline;stroke-width:0.264583"
@@ -156,7 +156,7 @@
            sodipodi:role="line"
            x="66.145828"
            y="69.563362"
-           id="tspan7122-20">Wait 11T</tspan></text></g><g
+           id="tspan7122-20">Wait 5T</tspan></text></g><g
        id="g7251-1-6"
        transform="translate(158.74999,6.6145786)"
        style="display:inline"><use
@@ -176,7 +176,7 @@
            sodipodi:role="line"
            x="66.145828"
            y="69.563362"
-           id="tspan7122-20-7">Pulse 1T</tspan></text></g><use
+           id="tspan7122-20-7">TX Pulse 1T</tspan></text></g><use
        xlink:href="#Process"
        style="display:inline;fill:#aaccee;fill-opacity:0;stroke:#000000"
        id="use3000-2-36"
@@ -193,7 +193,7 @@
          sodipodi:role="line"
          x="198.47083"
          y="155.42833"
-         id="tspan7122-6">Wait 5T</tspan></text><path
+         id="tspan7122-6">Wait 2T</tspan></text><path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 224.89582,81.469608 v 9.260417"
        id="path80323" /><g
@@ -224,7 +224,7 @@
            sodipodi:role="line"
            x="66.145836"
            y="73.389977"
-           id="tspan39143">and t &gt; 32T</tspan></text></g><use
+           id="tspan39143">and t &gt; 16T</tspan></text></g><use
        xlink:href="#Decision"
        style="display:inline;fill:#aaccee;fill-opacity:0;stroke:#000000"
        id="use3443-6-8-9-4-7-2"
@@ -440,7 +440,7 @@
            sodipodi:role="line"
            x="66.145828"
            y="73.532112"
-           id="tspan134726">or t &gt; 16 T</tspan></text></g><g
+           id="tspan134726">or t &gt; 8 T</tspan></text></g><g
        id="g7241-6-4"
        transform="translate(-26.458336,13.229163)"
        style="display:inline"><use
@@ -594,7 +594,7 @@
            sodipodi:role="line"
            id="tspan4343-3-1-5-7"
            x="66.145836"
-           y="125.12586"> t &lt;= 16T</tspan></text><use
+           y="125.12586"> t &lt;= 8T</tspan></text><use
          xlink:href="#Decision"
          style="display:inline;fill:#aaccee;fill-opacity:0;stroke:#000000"
          id="use3443-6-8-9-4-7-8-11"
@@ -611,7 +611,7 @@
          sodipodi:role="line"
          id="tspan4343-3-1-1"
          x="79.289093"
-         y="128.65332"> t &lt;= 8T</tspan></text><use
+         y="128.65332"> t &lt;= 4T</tspan></text><use
        xlink:href="#Decision"
        style="display:inline;fill:#aaccee;fill-opacity:0;stroke:#000000"
        id="use3443-6-8-9-4-7-29"
