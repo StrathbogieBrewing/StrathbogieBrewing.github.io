@@ -14,18 +14,18 @@ Tinbus provides...
 1. No need for a bus master as it uses collision detection with non-destructive arbitration
 1. High tolerance to clock frequency inaccuracy
 1. Low overhead data framing mechanism
-1. Speed of about 10 Kbps due to the low cost opto couplers and software burden
+1. Maximum speed of about 10 Kbps due to the low cost opto couplers
 1. Transmission distance of at least 100 m
 
 The protocol is intended to provide a simple method to communicate between several devices on a bus.
 
 ## Physical Layer
 
-The Tinbus physical layer is designed to allow power and data to be provided over 2 wires. This is achieved by using a signalling scheme that allows active power for at least 50 % of the time.
+The Tinbus physical layer is designed to allow power and data to be provided over 2 wires. This is achieved by using a signalling scheme that allows active power for at least 66 % of the time.
 
 ### Physical Signalling 
 
-The basic timing characteristics are illustrated below, where T is the pulse period. With low cost opto couplers T cannot be less than about 20 us. The round trip delay of transmitting to the the bus and receiving from the bus needs to be less than the pulse width. Decoding only needs to detect the leading edge of the pulse for data recovery. This makes the decoding less sensitive to asymmetry in the rise and fall times and propagation times of the signal. A slow data rate also allows the protocol to be implemented on low speed micro controllers.
+The basic timing characteristics are illustrated below, where T is the pulse period. With low cost opto couplers T cannot be less than about 30 us. The round trip delay of transmitting to the the bus and receiving from the bus needs to be less than the pulse width. Decoding only needs to detect the leading edge of the pulse for data recovery. This makes the decoding less sensitive to asymmetry in the rise and fall times and propagation times of the signal. A slow data rate also allows the protocol to be implemented on a low speed micro controller.
 
 ![Figure 1](./tinbus/tinbus-timing-raw.svg)
 
@@ -35,7 +35,7 @@ The end of a data frame is implied by the absence of data pulses for more than 2
 
 The signal encoding and decoding is illustrated below.
 
-![Figure 2](./tinbus/tinbus-flow-raw.svg)
+![Figure 2](./tinbus/tinbus-flow-pub.svg)
 
 ### Physical Medium Attachment
 
@@ -44,7 +44,7 @@ The bus voltage is nominally 12 V and the supply current is limited to 60 mA max
 A dominant signal is sent by pulling the bus voltage down towards zero for about 20 us. The pull down current should be limited to 80 mA maximum and would ideally pull down to below 2 V.
 
 ### Medium Dependant Interface
-Tinbus does not specify any particular connector.
+Tinbus does not specify any particular connector. Wiring needs to be selected to ensure loop resistance is less than 15 Ohms.
 
 ## Data Link Layer
 
