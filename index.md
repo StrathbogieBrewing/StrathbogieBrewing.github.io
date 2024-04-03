@@ -33,9 +33,24 @@ The transmission of a zero bit is dominant in the collision arbitration process.
 
 The end of a data frame is implied by the absence of data pulses for more than 24 T.
 
-The signal encoding and decoding is illustrated below.
+The signal encoding and decoding state diagram is illustrated below.
 
-![Figure 2](./tinbus/tinbus-flow-pub.svg)
+```mermaid
+stateDiagram-v2
+    RX_Active: RX Active
+    TX_Ready: TX Ready
+    TX_Enable: TX Enable
+    TX_Disable: TX Disable
+    [*] --> RX_Active
+    RX_Active --> RX_Active: RX Edge
+    RX_Active --> TX_Ready: 12T Timeout
+    TX_Ready --> RX_Active: RX Edge
+    TX_Ready --> TX_Enable: TX Request
+    TX_Enable --> TX_Disable: 1T Timeout
+    TX_Enable --> TX_Enable: RX Edge
+    TX_Disable --> RX_Active: RX Edge\nor TX Done
+    TX_Disable --> TX_Enable: 3T or 6T\nTimeout
+```
 
 ### Physical Medium Attachment
 
